@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Data</title>
+</head>
+<body>
+    <h1>WebSocket Data</h1>
+    <div id="data-container">
+        <!-- Os dados do WebSocket serão exibidos aqui -->
+    </div>
+
+    <script>
+        let socket = new WebSocket('ws://localhost:8000/ws/polData/');
+
+        socket.onopen = function (e) {
+            console.log('Conexão estabelecida');
+        };
+
+        socket.onmessage = function (e) {
+            console.log(e.data);
+            var recData = JSON.parse(e.data);
+
+            // Exiba os dados recebidos no contêiner de dados
+            var dataContainer = document.getElementById('data-container');
+            dataContainer.innerHTML += `<p>${JSON.stringify(recData)}</p>`;
+        };
+
+        socket.onclose = function (e) {
+            console.log('Conexão fechada');
+        };
+    </script>
+</body>
+</html>

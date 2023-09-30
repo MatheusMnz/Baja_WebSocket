@@ -1,19 +1,12 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from firstPage import views
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index,name='Home'),
-]
+    path('',views.Home.as_view(),name='home'),
+    path('visualization/', views.RealTimeDataView.as_view(), name='real_time_visualization')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-from channels.routing import ProtocolTypeRouter, URLRouter
-from django.urls import path
-from firstPage.consumer import DashConsumer  # Substitua pelo caminho correto do seu consumer
-
-application = ProtocolTypeRouter({
-    "websocket": URLRouter([
-        path("ws/polData/", DashConsumer.as_asgi()),  # Substitua pelo caminho correto do seu consumer
-    ]),
-})

@@ -1,9 +1,11 @@
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import path
-from firstPage.consumer import DashConsumer  # Substitua pelo caminho correto do seu consumer
+from firstPage.consumer import DashConsumer
+from django.core.asgi import get_asgi_application
 
 application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
     "websocket": URLRouter([
-        path("ws/polData/", DashConsumer.as_asgi()),  # Substitua pelo caminho correto do seu consumer
+        path("ws/polData/", DashConsumer.as_asgi()),
     ]),
 })
