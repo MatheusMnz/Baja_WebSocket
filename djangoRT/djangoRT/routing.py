@@ -1,15 +1,9 @@
-from channels.routing import ProtocolTypeRouter,URLRouter
-from channels.auth import AuthMiddlewareStack
-
+from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import path
-from firstPage import consumer
+from firstPage.consumer import DashConsumer  # Substitua pelo caminho correto do seu consumer
 
-websocket_urlPattern=[
-    path('ws/polData/',consumer.DashConsumer),
-]
-
-application=ProtocolTypeRouter({
-    # 'http':
-    'websocket':AuthMiddlewareStack(URLRouter(websocket_urlPattern))
-
+application = ProtocolTypeRouter({
+    "websocket": URLRouter([
+        path("ws/polData/", DashConsumer.as_asgi()),  # Substitua pelo caminho correto do seu consumer
+    ]),
 })
