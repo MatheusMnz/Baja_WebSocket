@@ -28,12 +28,12 @@ class DashConsumer(AsyncWebsocketConsumer):
             telemetry_data = event['telemetry_data']
             timestamp = telemetry_data['timestamp']
             value1 = telemetry_data['value1']
-            value2 = telemetry_data['value1']
-            value3 = telemetry_data['value1']
-            value4 = telemetry_data['value1']
-            value5 = telemetry_data['value1']
-            value6 = telemetry_data['value1']
-            value7 = telemetry_data['value1']
+            value2 = telemetry_data['value2']
+            value3 = telemetry_data['value3']
+            value4 = telemetry_data['value4']
+            value5 = telemetry_data['value5']
+            value6 = telemetry_data['value6']
+            value7 = telemetry_data['value7']
 
 
             data_to_send = {
