@@ -1,6 +1,5 @@
 from django.db import models
 import serial
-import json
 
 #---------------------------------------------------------------------------------------------------
 class TelemetryData(models.Model):
@@ -13,8 +12,8 @@ class TelemetryData(models.Model):
     value6 = models.FloatField(null=True)
     value7 = models.TextField(null=True)
 
-    def _str_(self):
-        return f"Data at {self.timestamp}: Value1={self.value1}, Value2={self.value2}, Value3={self.value3}, Value4={self.value4}, Value5={self.value5}, Value6={self.value6}, Value7={self.value7}"
+    def __str__(self):
+        return f"Data at {self.timestamp}: Value1={self.value1} Value2={self.value1} Value3={self.value1} Value4={self.value1} Value5={self.value1} Value6={self.value1} Value7={self.value1}"
 
 
 class SerialDataReader:
@@ -44,55 +43,49 @@ class SerialDataReader:
         if self.ser is not None:
             try:
                 data = self.ser.readline().decode('utf-8').strip()
-                values = data.split(',')
-                # if len(values) == 7:
-                #     (
-                #         vel_dianteira,
-                #         vel_traseira,
-                #         rpm,
-                #         esterçamento,
-                #         var_dist,
-                #         consumo,
-                #         pressao,
-                #     ) = map(lambda s: str(s.split(': ')[1]), values)
 
-                #     # Atualize as variáveis com os valores lidos
-                #     self.serial_data['velocidade_dianteira'] = vel_dianteira
-                #     self.serial_data['velocidade_traseira'] = vel_traseira
-                #     self.serial_data['rpm'] = rpm
-                #     self.serial_data['esterçamento'] = esterçamento
-                #     self.serial_data['var_dist'] = var_dist
-                #     self.serial_data['consumo'] = consumo
-                #     self.serial_data['pressao'] = pressao
+                # Separe os pares chave-valor
+                pairs = data.split(',')
+                values = {}
 
-                #     # Crie uma instância do modelo TelemetryData e salve os dados
-                #     telemetry_data = TelemetryData(
-                #         value1=float(vel_dianteira), 
-                #         value2=float(vel_traseira),
-                #         value3=float(rpm),
-                #         value4=float(esterçamento),
-                #         value5=float(var_dist),
-                #         value6=float(consumo),
-                #         value7=str(pressao),
-                #     )
-                #     telemetry_data.save()
-                #     print(self.serial_data)
+                for pair in pairs:
+                    key, value = pair.strip().split(': ')
+                    values[key.strip()] = value.strip()
 
+                pressao_value = values['Pressao']
 
-                # Teste
-                print(values)
-                if len(values) == 1:
-                    vel_dianteira = values[0].split(':')[1]
-                    self.serial_data['velocidade_dianteira'] = vel_dianteira
-                    telemetry_data = TelemetryData(
-                        value1=float(vel_dianteira)
-                    )
-                    telemetry_data.save()
+                if '(' in pressao_value:
+                    pressao_value = pressao_value.split('(')[0].strip()
+
+                # Atualize os valores no dicionário serial_data
+                self.serial_data['Velocidades Dianteira'] = float(values['Velocidades Dianteira'])
+                self.serial_data['Velocidade Traseira'] = float(values['Velocidade Traseira'])
+                self.serial_data['RPM'] = float(values['RPM'])
+                self.serial_data['Estercamento'] = float(values['Estercamento'])
+                self.serial_data['Var_dist'] = float(values['Var_dist'])
+                self.serial_data['Consumo'] = float(values['Consumo'])
+                self.serial_data['Pressao'] = float(pressao_value)
+
+                # Crie uma instância do modelo TelemetryData e salve os dados
+                telemetry_data = TelemetryData(
+                    value1=self.serial_data['Velocidades Dianteira'],
+                    value2=self.serial_data['Velocidade Traseira'],
+                    value3=self.serial_data['RPM'],
+                    value4=self.serial_data['Estercamento'],
+                    value5=self.serial_data['Var_dist'],
+                    value6=self.serial_data['Consumo'],
+                    value7=str(self.serial_data['Pressao']),
+                )
+
+                # Armazene no Banco de Dados
+                telemetry_data.save()
+                print("\nSalvou no Banco de dados!")
 
             except KeyboardInterrupt:
                 print("Keyboard interrupt. Exiting...")
             except serial.serialutil.SerialException as e:
                 print(f"Serial communication error: {e}")
+
 
     def get_serial_data(self):
         return self.serial_data
@@ -108,7 +101,7 @@ class HomePage(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
 
-    def _str_(self):
+    def __str__(self):
         return self.title
 
 
@@ -116,5 +109,5 @@ class AboutPage(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
 
-    def _str_(self):
+    def __str__(self):
         return self.title

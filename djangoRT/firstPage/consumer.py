@@ -1,23 +1,18 @@
-import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
-from .models import SerialDataReader, TelemetryData
 
 class DashConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         self.groupname='dashboard'
-
+        await self.accept()
         await self.channel_layer.group_add(
             self.groupname,
             self.channel_name,
         )
+        print('Conectou')
 
-        await self.accept()
-        self.serial_reader = SerialDataReader(usb_serial_port='/dev/ttyUSB0', baud_rate=115200)
-        self.serial_reader.connect()
-        self.send_serial_data()
 
 
     async def disconnect(self,close_code):
@@ -28,29 +23,31 @@ class DashConsumer(AsyncWebsocketConsumer):
         self.serial_reader.close()
     
     
-    async def send_serial_data(self):
-        while True:
-            try:
-                # Leio os dados da porta serial e armazeno no BD
-                await self.serial_reader.read_data() 
-
-                # Pego o último dado inserido no BD
-                real_data = TelemetryData.objects.last()
-
-                # Envio o dado para o grupo
-                await self.channel_layer.group_send(
-                    self.groupname,
-                    {
-                        'type': 'deprocessing',
-                        'value': real_data,
-                    }
-                )
-                await asyncio.sleep(0.5)
-            except Exception as e:
-                    print(f"Erro ao enviar dados em tempo real via WebSocket: {e}")
-                    await asyncio.sleep(5)  # Aguarde antes de tentar novamente
+    async def receive(self, event):
+            print("Recebeu um evento no Consumer")
+            telemetry_data = event['telemetry_data']
+            timestamp = telemetry_data['timestamp']
+            value1 = telemetry_data['value1']
+            value2 = telemetry_data['value1']
+            value3 = telemetry_data['value1']
+            value4 = telemetry_data['value1']
+            value5 = telemetry_data['value1']
+            value6 = telemetry_data['value1']
+            value7 = telemetry_data['value1']
 
 
-    async def deprocessing(self,event):
-        valOther=event['value']
-        await self.send(text_data=json.dumps({'value':valOther}))
+            data_to_send = {
+                'timestamp': timestamp,
+                'value1': value1,
+                'value2': value2,
+                'value3': value3,
+                'value4': value4,
+                'value5': value5,
+                'value6': value6,
+                'value7': value7,
+            }
+
+            print(f"Data to send: {data_to_send}")
+            await self.send(text_data=json.dumps(data_to_send))
+            print("Dados enviados para Canal!")
+        
