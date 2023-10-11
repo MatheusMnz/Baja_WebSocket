@@ -79,7 +79,9 @@ class SerialDataReader:
 
                 # Armazene no Banco de Dados
                 telemetry_data.save()
-                print("\nSalvou no Banco de dados!")
+                # print("\nSalvou no Banco de dados!")
+
+                return 1
 
             except KeyboardInterrupt:
                 print("Keyboard interrupt. Exiting...")
