@@ -30,10 +30,10 @@
                 <div class="container">
                     <div class="header-row">
                         <div id="logo">
-                            <a href="{% url 'home-final' %}" class="standard-logo" data-dark-logo="{% static 'images/logo-dark.png' %}">
+                            <a href="{% url 'home' %}" class="standard-logo" data-dark-logo="{% static 'images/logo-dark.png' %}">
                                 <img src="{% static 'images/logo.png' %}" alt="Canvas Logo">
                             </a>
-                            <a href="{% url 'home-final' %}" class="retina-logo" data-dark-logo="{% static 'images/logo-dark@2x.png' %}">
+                            <a href="{% url 'home' %}" class="retina-logo" data-dark-logo="{% static 'images/logo-dark@2x.png' %}">
                                 <img src="{% static 'images/logo.png' %}" alt="Canvas Logo">
                             </a>
                         </div>
@@ -49,40 +49,56 @@
 
                             <ul class="menu-container">
                                 <li class="menu-item">
-                                    <a class="menu-link" href="{% url 'home-final' %}">
+                                    <a class="menu-link" href="{% url 'home' %}">
                                         <div>Início</div>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a class="menu-link" href="{% url 'home-final' %}">
+                                    <a class="menu-link" href="{% url 'subsistemas' %}">
                                         <div>Subsistemas</div>
                                     </a>
                                     <ul class="sub-menu-container">
+                                        
                                         <li class="menu-item">
-                                            <a class="menu-link" href="{% url 'home-final' %}">
-                                                <div>Calculo e Design</div>
+                                            <a class="menu-link" href="{% url 'calculo' %}"><div>Calculo e Design</div>
                                             </a>
                                         </li>
+
                                         <li class="menu-item">
-                                            <a class="menu-link" href="{% url 'eletronica' %}">
-                                                <div>Eletrônica</div>
+                                            <a class="menu-link" href="{% url 'eletronica' %}"><div>Eletrônica</div>
                                             </a>
+                                        </li>
+    
+                                        <li class="menu-item">
+                                            <a class="menu-link" href="{% url 'freio' %}"><div>Freio</div></a>
+                                        </li>
+
+                                        <li class="menu-item">
+                                            <a class="menu-link" href="{% url 'marketing' %}"><div>Marketing</div></a>
+                                        </li>
+
+                                        <li class="menu-item">
+                                            <a class="menu-link" href="{% url 'powertrain' %}"><div>Powertrain</div></a>
+                                        </li>
+
+                                        <li class="menu-item">
+                                            <a class="menu-link" href="{% url 'suspensao' %}"><div>Suspensão e direção</div></a>
                                         </li>
                                         <!-- Adicione as outras opções do submenu aqui -->
                                     </ul>
                                 </li>
                                 <li class="menu-item">
-                                    <a class="menu-link" href="{% url 'home-final' %}">
+                                    <a class="menu-link" href="{% url 'about' %}">
                                         <div>Nossa história</div>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a class="menu-link" href="{% url 'home-final' %}">
+                                    <a class="menu-link" href="{% url 'partners' %}">
                                         <div>Parcerias</div>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a class="menu-link" href="{% url 'home-final' %}">
+                                    <a class="menu-link" href="{% url 'contact' %}">
                                         <div>Contato</div>
                                     </a>
                                 </li>

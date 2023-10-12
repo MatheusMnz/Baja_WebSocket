@@ -144,7 +144,7 @@
     <!-- Campos de texto para exibir os valores -->
     <!-------------------------------------------------------------------------------------------------------->
     <div class="data-field">
-        Esterçamento: <span id="esteramento-value">0</span>
+        Esterçamento: <span id="estercamento-value">0</span>
     </div>
     
 
@@ -175,7 +175,6 @@
                 return;
             }
 
-            value += 29
             const fillRotation = (value / 60) * 0.5; // Calcular a rotação da barra de preenchimento proporcionalmente
             const textContent = `${Math.round(value)} Km/h`;
 
@@ -184,7 +183,6 @@
         }
 
         function setGaugeValueRPM(gauge, value) {
-            value += 3200
             if (value < 1600 || value > 3900) {
                 return;
             }
@@ -200,8 +198,6 @@
 
         function updateGaugeFillColor(gauge, value) {
             // Adicionar classes de cor à barra de preenchimento com base na velocidade
-            value += 60
-
             if (value <= 30) {
                 gauge.querySelector(".gauge__fill").style.background = 'green';
             } else if (value <= 45) {
@@ -215,7 +211,6 @@
             const minRPM = 1600;
             const maxRPM = 3900;
 
-            value += 2800
 
             if (value >= minRPM && value < 2400) {
                 gauge.querySelector(".gauge__fill").style.background = 'yellow';
@@ -241,7 +236,8 @@
         socket.onmessage = function (e) {
             console.log(e.data);
             var recData = JSON.parse(e.data);
-            console.log(recData)
+            console.log("Após o parser: " + recData)
+            console.log("Após o parser Value 1: " + recData.value1)
 
             // Exiba os dados recebidos no contêiner de dados
             var dataContainer = document.getElementById('data-container');
@@ -263,7 +259,7 @@
             updateGaugeFillColorRPM(document.querySelectorAll('.gauge')[1], recData.value3);
 
             // Atualize os campos de texto com os valores de Esterçamento, Distância, Consumo de Combustível e Pressão
-            document.getElementById('esteramento-value').textContent = recData.value4;
+            document.getElementById('estercamento-value').textContent = recData.value4;
             document.getElementById('distancia-value').textContent = recData.value5;
             document.getElementById('consumo-combustivel-value').textContent = recData.value6;
             document.getElementById('pressao-value').textContent = recData.value7;
